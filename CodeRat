@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#075be8">
+  <meta name="description" content="Accédez au portail Wi-Fi FREE WI-FI.">
+  <title>FREE WI-FI — Accès Wi-Fi</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --blue: #075be8;
+      --blue-dark: #0645b5;
+      --ink: #14213d;
+      --muted: #65738b;
+      --line: #e4eaf3;
+      --surface: #ffffff;
+      --canvas: #f3f7ff;
+      --green: #12845b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 8% 8%, rgba(93, 161, 255, .17), transparent 36rem),
+        radial-gradient(ellipse at 95% 90%, rgba(31, 207, 163, .10), transparent 32rem),
+        var(--canvas);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .topbar {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      min-height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; font-weight: 800; letter-spacing: -.045em; }
+    .brand-mark {
+      width: 42px; height: 42px; display: grid; place-items: center;
+      color: white; background: linear-gradient(145deg, #1681ff, #0649d0);
+      border-radius: 14px; box-shadow: 0 8px 18px rgba(7, 91, 232, .24);
+    }
+    .brand-name { font-size: 18px; }
+    .secure { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 7px; }
+    main { flex: 1; display: grid; place-items: center; padding: 28px 20px 56px; }
+    .layout { width: min(100%, 940px); display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(34px, 7vw, 86px); }
+    .intro { padding: 12px 0; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px;
+      border: 1px solid #dce8fa; border-radius: 99px; color: #315a9d;
+      background: rgba(255,255,255,.66); font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: #19bc82; box-shadow: 0 0 0 4px rgba(25,188,130,.12); }
+    h1 { margin: 20px 0 14px; max-width: 470px; font-size: clamp(38px, 5vw, 58px); line-height: 1.04; letter-spacing: -.055em; }
+    h1 span { color: var(--blue); }
+    .intro-copy { max-width: 420px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+    .steps { display: grid; gap: 14px; margin: 31px 0 0; padding: 0; list-style: none; }
+    .steps li { display: flex; align-items: center; gap: 12px; color: #44536c; font-size: 14px; }
+    .step-number { display: grid; place-items: center; width: 25px; height: 25px; flex: 0 0 25px; color: var(--blue); background: #e2edff; border-radius: 50%; font-size: 12px; font-weight: 800; }
+    .card { width: 100%; padding: clamp(26px, 4vw, 38px); background: var(--surface); border: 1px solid rgba(216, 226, 241, .9); border-radius: 24px; box-shadow: 0 24px 70px rgba(30, 66, 125, .12); }
+    .form-view[hidden] { display: none; }
+    .card h2 { margin: 0; font-size: 25px; letter-spacing: -.035em; }
+    .card-lead { margin: 9px 0 27px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    label.field-label { display: block; margin: 0 0 9px; color: #32415a; font-size: 13px; font-weight: 700; }
+    .email-input { width: 100%; height: 52px; padding: 0 15px; color: var(--ink); background: #fbfcff; border: 1px solid #dbe3ef; border-radius: 12px; font: inherit; font-size: 15px; outline: none; transition: border .18s ease, box-shadow .18s ease; }
+    .email-input:focus { border-color: #7cacff; box-shadow: 0 0 0 4px rgba(7,91,232,.11); }
+    .email-input::placeholder { color: #9aa6b7; }
+    .consent { display: flex; align-items: flex-start; gap: 10px; margin: 19px 0 22px; color: #58667c; font-size: 13px; line-height: 1.55; }
+    .consent input { width: 17px; height: 17px; flex: 0 0 17px; margin: 1px 0 0; accent-color: var(--blue); cursor: pointer; }
+    .consent a, .footer a { color: var(--blue); font-weight: 650; text-decoration: none; }
+    .consent a:hover, .footer a:hover { text-decoration: underline; }
+    .submit-btn, .back-btn {
+      min-height: 52px; width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      border: 0; border-radius: 12px; font: inherit; font-weight: 750; cursor: pointer;
+      transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+    }
+    .submit-btn { color: white; background: var(--blue); box-shadow: 0 9px 20px rgba(7,91,232,.22); }
+    .submit-btn:hover:not(:disabled) { background: var(--blue-dark); transform: translateY(-1px); }
+    .submit-btn:disabled { color: #99a6ba; background: #e9edf4; box-shadow: none; cursor: not-allowed; }
+    .submit-btn:focus-visible, .back-btn:focus-visible, .modal-close:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #96bcff; outline-offset: 3px; }
+    .privacy-note { display: flex; justify-content: center; align-items: center; gap: 7px; margin: 17px 0 0; color: #8591a3; font-size: 11px; text-align: center; }
+    .success-art { width: min(100%, 245px); height: auto; margin: 3px auto 17px; display: block; }
+    .status-note { margin: 0 0 22px; padding: 12px 14px; color: #58667c; background: #f4f7fc; border-radius: 11px; font-size: 12px; line-height: 1.5; }
+    .back-btn { color: var(--blue); background: #eaf2ff; }
+    .back-btn:hover { background: #dceaff; }
+    footer { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 17px 0 23px; display: flex; justify-content: space-between; gap: 18px; color: #8390a3; font-size: 11px; }
+    footer p { margin: 0; }
+    .modal-backdrop { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 20px; background: rgba(13, 28, 52, .48); }
+    .modal-backdrop[hidden] { display: none; }
+    .modal { width: min(100%, 560px); max-height: min(80vh, 700px); overflow: auto; padding: 28px; background: white; border-radius: 20px; box-shadow: 0 26px 80px rgba(11, 31, 65, .3); }
+    .modal-head { display: flex; justify-content: space-between; align-items: start; gap: 20px; }
+    .modal h2 { margin: 0; font-size: 23px; letter-spacing: -.03em; }
+    .modal-close { display: grid; place-items: center; width: 34px; height: 34px; border: 0; border-radius: 10px; color: #53627a; background: #f1f4f8; font-size: 20px; cursor: pointer; }
+    .modal-copy { color: #56647a; font-size: 14px; line-height: 1.7; }
+    .modal-copy h3 { margin: 20px 0 6px; color: var(--ink); font-size: 14px; }
+    .modal-copy p { margin: 0; }
+    @media (max-width: 760px) {
+      .topbar { min-height: 72px; }
+      .secure { font-size: 0; gap: 0; }
+      main { padding: 22px 18px 40px; }
+      .layout { max-width: 460px; grid-template-columns: 1fr; gap: 26px; }
+      .intro { text-align: center; padding: 4px 0 0; }
+      h1 { margin: 15px auto 10px; font-size: clamp(36px, 10vw, 48px); }
+      .intro-copy { margin: 0 auto; font-size: 14px; }
+      .steps { width: max-content; margin: 19px auto 0; gap: 9px; text-align: left; }
+      .steps li { font-size: 12px; }
+      .step-number { width: 22px; height: 22px; flex-basis: 22px; }
+      .card { border-radius: 20px; }
+      footer { width: calc(100% - 36px); flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+    }
+    .full-image-view { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: #211e1b; }
+    .full-image-view[hidden] { display: none; }
+    .full-image-view img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    body.image-mode { min-height: 100vh; overflow: hidden; background: #211e1b; }
+    body.image-mode .topbar, body.image-mode main, body.image-mode footer, body.image-mode #termsBackdrop { display: none !important; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="FREE WI-FI, accueil">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M3 8.8a14 14 0 0 1 18 0M6.5 12.3a8.6 8.6 0 0 1 11 0M10 15.8a3.2 3.2 0 0 1 4 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="brand-name">FREE WI-FI</span>
+    </a>
+    <div class="secure" aria-label="Portail Wi-Fi"><span aria-hidden="true">●</span> Portail Wi-Fi</div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <section class="intro" aria-labelledby="page-title">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> Wi-Fi gratuit</div>
+        <h1 id="page-title">Restez connecté<span>.</span></h1>
+        <p class="intro-copy">Un accès simple et rapide au réseau FREE WI-FI. Renseignez votre adresse e-mail et acceptez les conditions pour continuer.</p>
+        <ol class="steps" aria-label="Étapes de connexion">
+          <li><span class="step-number">1</span> Entrez votre adresse e-mail</li>
+          <li><span class="step-number">2</span> Acceptez les conditions d’utilisation</li>
+          <li><span class="step-number">3</span> Accédez à la suite</li>
+        </ol>
+      </section>
+
+      <section class="card" aria-live="polite">
+        <div class="form-view" id="formView">
+          <h2>Accéder au Wi-Fi</h2>
+          <p class="card-lead">Remplissez les informations ci-dessous pour continuer.</p>
+          <form id="accessForm">
+            <label class="field-label" for="email">Adresse e-mail</label>
+            <input class="email-input" id="email" name="email" type="email" placeholder="vous@exemple.com" autocomplete="email" required>
+            <label class="consent" for="terms">
+              <input id="terms" name="terms" type="checkbox" required>
+              <span>J’accepte les <a href="#conditions" id="openTerms">conditions générales d’utilisation</a>.</span>
+            </label>
+            <button class="submit-btn" id="submitBtn" type="submit" disabled>
+              <span>Continuer</span><span aria-hidden="true">→</span>
+            </button>
+          </form>
+          <p class="privacy-note"><span aria-hidden="true">▣</span> Vos informations ne sont pas enregistrées par cette page de démonstration.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> FREE WI-FI</p>
+    <p>En continuant, vous confirmez avoir lu les conditions d’utilisation.</p>
+  </footer>
+
+  <div class="modal-backdrop" id="termsBackdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+      <div class="modal-head">
+        <h2 id="termsTitle">Conditions générales d’utilisation</h2>
+        <button class="modal-close" id="closeTerms" type="button" aria-label="Fermer">×</button>
+      </div>
+      <div class="modal-copy">
+        <p><strong>Modèle à personnaliser avant toute mise en ligne.</strong> Remplacez les informations entre crochets et faites vérifier ces conditions selon votre situation.</p>
+        <h3>Accès au service</h3>
+        <p>Le réseau FREE WI-FI fournit un accès Internet sans fil aux visiteurs, sous réserve de disponibilité. L’utilisateur s’engage à utiliser le service conformément aux lois applicables et à ne pas porter atteinte aux droits d’autrui ni au bon fonctionnement du réseau.</p>
+        <h3>Données personnelles</h3>
+        <p>Dans cette maquette, l’adresse e-mail est utilisée uniquement pour la validation locale du formulaire et n’est ni transmise ni enregistrée. En production, précisez le responsable du traitement, les finalités, la durée de conservation, les droits des personnes et un contact : [à compléter].</p>
+        <h3>Contact</h3>
+        <p>Entreprise / exploitant : [à compléter] · Contact : [à compléter]</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="full-image-view" id="fullImageView" hidden>
+    <img src="./image-rat.png" alt="Un rat faisant un geste avec la mention Pas de Wi-Fi pour les rats">
+  </div>
+
+  <script>
+    const form = document.getElementById('accessForm');
+    const email = document.getElementById('email');
+    const terms = document.getElementById('terms');
+    const submitBtn = document.getElementById('submitBtn');
+    const backdrop = document.getElementById('termsBackdrop');
+    const openTerms = document.getElementById('openTerms');
+    const closeTerms = document.getElementById('closeTerms');
+
+    function updateButton() {
+      submitBtn.disabled = !(email.validity.valid && email.value.trim() && terms.checked);
+    }
+    email.addEventListener('input', updateButton);
+    terms.addEventListener('change', updateButton);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      document.getElementById('fullImageView').hidden = false;
+      document.body.classList.add('image-mode');
+    });
+
+    openTerms.addEventListener('click', (event) => {
+      event.preventDefault();
+      backdrop.hidden = false;
+      closeTerms.focus();
+    });
+    function closeModal() {
+      backdrop.hidden = true;
+      openTerms.focus();
+    }
+    closeTerms.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', (event) => {
+      if (event.target === backdrop) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !backdrop.hidden) closeModal();
+    });
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
